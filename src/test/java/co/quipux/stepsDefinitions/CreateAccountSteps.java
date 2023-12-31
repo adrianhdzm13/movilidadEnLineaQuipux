@@ -2,7 +2,9 @@ package co.quipux.stepsDefinitions;
 
 import co.quipux.models.CreateAccountData;
 import co.quipux.questions.CreateAccountSuccesfulQuestion;
+import co.quipux.questions.ValidateFieldsQuestions;
 import co.quipux.task.CreateAccountTask;
+import co.quipux.task.ValidateFieldsTask;
 import co.quipux.utils.BaseConfig;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
@@ -67,6 +69,29 @@ public class CreateAccountSteps extends BaseConfig {
                         "Movilidad en Línea",
                         CreateAccountSuccesfulQuestion.titleOfRegistrationSuccesful(),
                         equalTo(convertUtf8("Movilidad en Línea"))
+                )
+        );
+    }
+
+    //@VALIDATE_FIELDS
+    @Given("I am on the create account page")
+    public void iAmOnTheCreateAccountPage() {
+        OnStage.theActorCalled(ACTOR).wasAbleTo(Open.url(URL));
+    }
+    @When("I enter incomplete information and submit the form")
+    public void iEnterIncompleteInformationAndSubmitTheForm() {
+        theActorInTheSpotlight().attemptsTo(
+                ValidateFieldsTask.validateFieldsTaskInstrumented()
+        );
+    }
+
+    @Then("error messages for the required fields should be displayed {string}")
+    public void errorMessagesForTheRequiredFieldsShouldBeDisplayed(String text) {
+        theActorInTheSpotlight().should(
+                seeThat(
+                        "Este campo es obligatorio",
+                        ValidateFieldsQuestions.messageValidationFields(),
+                        equalTo(convertUtf8(text))
                 )
         );
     }
