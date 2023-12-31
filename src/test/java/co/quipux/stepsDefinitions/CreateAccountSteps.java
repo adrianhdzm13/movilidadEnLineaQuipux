@@ -2,12 +2,15 @@ package co.quipux.stepsDefinitions;
 
 import co.quipux.models.CreateAccountData;
 import co.quipux.questions.CreateAccountSuccesfulQuestion;
-import co.quipux.questions.ValidateFieldsQuestions;
+import co.quipux.questions.ValidateFieldsQuestion;
 import co.quipux.task.CreateAccountTask;
+import co.quipux.task.InvalidEmailAndPhoneTask;
+import co.quipux.task.ValidEmailAndPhoneTask;
 import co.quipux.task.ValidateFieldsTask;
 import co.quipux.utils.BaseConfig;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -90,10 +93,36 @@ public class CreateAccountSteps extends BaseConfig {
         theActorInTheSpotlight().should(
                 seeThat(
                         "Este campo es obligatorio",
-                        ValidateFieldsQuestions.messageValidationFields(),
+                        ValidateFieldsQuestion.messageValidationFields(),
                         equalTo(convertUtf8(text))
                 )
         );
     }
+
+ //@VALIDATE_EMAIL
+    @When("I enter valid email and phone number")
+    public void iEnterValidEmailAndPhoneNumber(List<CreateAccountData> data) {
+        theActorInTheSpotlight().attemptsTo(
+                ValidEmailAndPhoneTask.validEmailAndPhoneNumberOkTask(data)
+        );
+    }
+
+    @And("I enter invalid email and phone number")
+    public void iEnterInvalidEmailAndPhoneNumber(List<CreateAccountData> data) {
+        theActorInTheSpotlight().attemptsTo(
+                InvalidEmailAndPhoneTask.invalidEmailAndPhoneTask(data)
+        );
+    }
+    @Then("error messages should be displayed for both fields")
+    public void errorMessagesShouldBeDisplayedForBothFields() {
+        theActorInTheSpotlight().should(
+                seeThat(
+                        "Escriba una dirección de correo válida.",
+                        ValidateFieldsQuestion.messageValidationFields(),
+                        equalTo(convertUtf8("Escriba una dirección de correo válida."))
+                )
+        );
+    }
+
 
 }
