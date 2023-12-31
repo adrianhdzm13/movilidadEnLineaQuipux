@@ -1,0 +1,54 @@
+plugins{
+    id "java"
+    id "net.serenity-bdd.serenity-gradle-plugin" version "3.4.2"
+}
+
+group "org.example"
+version "1.0-SNAPSHOT"
+
+sourceCompatibility=1.8
+targetCompatibility=1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+ext {
+    serenityVersion="2.6.0"
+    cucumberVersion="6.11.0"
+    seleniumVersion="3.141.59"
+    junitVersion="5.4.2"
+    log4jVersion="1.2.17"
+    slf4jVersion="1.7.21"
+    assertjVersion="3.11.1"
+    apachePOIVersion="3.8"
+    apacheOOXMLVersion="3.17"
+}
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.ext.junitVersion"
+    testImplementation "org.assertj:assertj-core:$rootProject.ext.assertjVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.ext.junitVersion"
+    implementation "org.slf4j:slf4j-log4j12:$rootProject.ext.slf4jVersion"
+    implementation "log4j:log4j:$rootProject.ext.log4jVersion"
+    implementation "net.serenity-bdd:serenity-core:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-junit:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-cucumber6:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-screenplay:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:$rootProject.ext.serenityVersion"
+    implementation "org.seleniumhq.selenium:selenium-server:$rootProject.ext.seleniumVersion"
+    implementation "io.cucumber:cucumber-java:$rootProject.ext.cucumberVersion"
+    implementation "org.apache.poi:poi:$rootProject.ext.apachePOIVersion"
+    implementation "org.apache.poi:poi-ooxml:$rootProject.ext.apacheOOXMLVersion"
+    // https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager
+    implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.5.3'
+
+    implementation "net.serenity-bdd:serenity-gradle-plugin:2.1.4"
+    implementation "net.serenity-bdd:serenity-single-page-report:2.1.4"
+
+}
+
+test {
+    useJUnit()
+}
