@@ -1,12 +1,11 @@
 #language: en
-
-@CREATE_ACCOUNT
+@RUN_FEATURE
 Feature: User Creation
   In order to access the platform
   As a new user
   I want to create an account
 
-  @CREATE_USER
+  @CREATE_ACCOUNT
   Scenario: Create a new user
     Given that I am on the registration page
     When the required data is entered and the registration form is submitted
