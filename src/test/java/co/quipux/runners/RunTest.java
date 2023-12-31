@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features/",
         glue = {"co.quipux.stepsDefinitions"},
         snippets = CucumberOptions.SnippetType.CAMELCASE,
-        tags = "@LOGIN",
+        tags = "@FINES_VALIDATION",
         dryRun = false,
         monochrome = true
 )

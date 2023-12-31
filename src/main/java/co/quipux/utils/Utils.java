@@ -14,5 +14,6 @@ public class Utils {
     public static final String ACTOR = "Utest user";
     HomePage homePage = new HomePage();
     public static final String URL = "https://digital.quipux.com/portal-movilidad/#/inicio-login";
+    public static final String URL_HOME_PUBLIC = "https://digital.quipux.com/portal-movilidad/#/public";
 
 }

@@ -1,3 +1,5 @@
+//defaultTasks 'clean', 'test', 'aggregate'
+
 plugins{
     id "java"
     id "net.serenity-bdd.serenity-gradle-plugin" version "3.4.2"
@@ -48,7 +50,26 @@ dependencies {
     implementation "net.serenity-bdd:serenity-single-page-report:2.1.4"
 
 }
+serenity {
+    // Specify the root package of any JUnit acceptance tests to appear in the Serenity report
+    testRoot = "src/test/java"
+    // Specify the root directory of any Cucumber feature files
+    requirementsDir = "src/test/resources/features"
+}
 
+tasks.withType(JavaCompile){
+    options.encoding = 'UTF-8'
+}
+
+//tasks.withType(Test) {
+//    testLogging.showStandardStreams = true
+//    systemProperties = System.properties
+//    maxParallelForks = Runtime.runtime.availableProcessors()
+//}
+
+gradle.startParameter.continueOnFailure = true
+
+test.finalizedBy(aggregate)
 test {
     useJUnit()
 }
