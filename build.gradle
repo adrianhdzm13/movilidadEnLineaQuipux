@@ -57,9 +57,9 @@ serenity {
     requirementsDir = "src/test/resources/features"
 }
 
-tasks.withType(JavaCompile){
-    options.encoding = 'UTF-8'
-}
+//tasks.withType(JavaCompile){
+//    options.encoding = 'UTF-8'
+//}
 
 //tasks.withType(Test) {
 //    testLogging.showStandardStreams = true

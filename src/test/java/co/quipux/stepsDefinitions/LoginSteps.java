@@ -1,10 +1,6 @@
 package co.quipux.stepsDefinitions;
-
-import co.quipux.models.CreateAccountData;
 import co.quipux.models.LoginData;
 import co.quipux.questions.LoginQuestion;
-import co.quipux.questions.ValidateFieldsQuestion;
-import co.quipux.task.CreateAccountTask;
 import co.quipux.task.LoginTask;
 import co.quipux.utils.BaseConfig;
 import io.cucumber.java.Before;

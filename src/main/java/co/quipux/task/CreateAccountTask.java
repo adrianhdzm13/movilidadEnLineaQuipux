@@ -48,7 +48,7 @@ public class CreateAccountTask extends BaseConfig implements Task {
                 Enter.theValue(data.get(0).getPassword()).into(INPUT_PASSWORD),
                 Enter.theValue(data.get(0).getConfirmarPassword()).into(INPUT_CONFIRM_PASSWORD),
                 Click.on(BUTTON_REGISTRARME),
-                PerformWait.wait(10)
+                PerformWait.wait(9)
         );
         BaseConfig.log.info("Execution of tasks and actions ["+this.getClass().getName()+"]");
     }

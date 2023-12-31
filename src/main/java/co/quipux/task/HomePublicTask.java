@@ -11,14 +11,10 @@ import net.serenitybdd.screenplay.actions.Enter;
 
 import java.util.List;
 
-import static co.quipux.ui.FineProjectionPage.BUTTON_CERRAR_PROYECCION;
-import static co.quipux.ui.FineProjectionPage.SELECT_PROYECCION;
 import static co.quipux.ui.HomePublicPage.*;
-import static co.quipux.utils.Utils.convertUtf8;
-import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
+
 import static net.serenitybdd.screenplay.Tasks.instrumented;
-import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
-import static org.hamcrest.CoreMatchers.equalTo;
+;
 
 public class HomePublicTask extends BaseConfig implements Task {
 

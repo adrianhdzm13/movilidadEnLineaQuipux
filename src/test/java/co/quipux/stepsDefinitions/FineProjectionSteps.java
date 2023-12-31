@@ -17,7 +17,7 @@ import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 
 import static co.quipux.utils.Utils.*;
@@ -32,8 +32,8 @@ public class FineProjectionSteps extends BaseConfig {
     }
 
     @DataTableType
-    public FineProjectionData convert(Map<String,String> ent) {
-        BaseConfig.log.info("Dataset registration ["+this.getClass().getName()+"]");
+    public FineProjectionData convert(Map<String, String> ent) {
+        BaseConfig.log.info("Dataset registration [" + this.getClass().getName() + "]");
         return new FineProjectionData(
                 ent.get("identificacion")
         );
@@ -41,24 +41,31 @@ public class FineProjectionSteps extends BaseConfig {
 
     @Before
     public void SetTheStage() {
-        BaseConfig.log.info("Application start ["+this.getClass().getName()+"]");
+        BaseConfig.log.info("Application start [" + this.getClass().getName() + "]");
         OnStage.setTheStage(new OnlineCast());
     }
 
 
-    @Given("the user enters a document number on the public home page")
-    public void theUserEntersADocumentNumberOnThePublicHomePage(List<FineProjectionData> data) {
+    @Given("the user enters a document {string} number on the public home page")
+    public void theUserEntersADocumentNumberOnThePublicHomePage(String data) {
         OnStage.theActorCalled(ACTOR).wasAbleTo(Open.url(URL_HOME_PUBLIC));
+
+        FineProjectionData fineProjectionData = new FineProjectionData(data);
+        ///List<FineProjectionData> data2 = new ArrayList<FineProjectionData>();
+        ///data2.add(fineProjectionData);
+
         theActorInTheSpotlight().attemptsTo(
-                HomePublicTask.homePublicTaskInstrumented(data)
+                HomePublicTask.homePublicTaskInstrumented(Collections.singletonList(fineProjectionData))
         );
     }
+
     @When("they view and close the fine projection")
     public void theyViewAndCloseTheFineProjection() {
         theActorInTheSpotlight().attemptsTo(
                 FineProjectionTask.fineProjectionTaskInstrumented()
         );
     }
+
     @Then("the fine projection should hide {string}")
     public void theFineProjectionShouldHide(String texto) {
         theActorInTheSpotlight().should(
