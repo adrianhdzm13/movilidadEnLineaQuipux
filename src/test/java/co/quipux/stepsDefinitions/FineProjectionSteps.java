@@ -7,9 +7,13 @@ import co.quipux.questions.LoginQuestion;
 import co.quipux.task.FineProjectionTask;
 import co.quipux.task.HomePublicTask;
 import co.quipux.task.LoginTask;
+import co.quipux.task.NoFineProjectionTask;
 import co.quipux.utils.BaseConfig;
+import co.quipux.utils.ReadExcelFile;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,15 +21,18 @@ import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
+import java.io.IOException;
+
 import java.util.Collections;
+
 import java.util.Map;
 
 import static co.quipux.utils.Utils.*;
-import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
-import static org.hamcrest.CoreMatchers.equalTo;
+
 
 public class FineProjectionSteps extends BaseConfig {
+
 
     public FineProjectionSteps() {
         super(FineProjectionSteps.class);
@@ -40,23 +47,29 @@ public class FineProjectionSteps extends BaseConfig {
     }
 
     @Before
-    public void SetTheStage() {
+    public void SetTheStage(Scenario scenario) throws Exception {
+        this.scenarioName = scenario.getName();
+        this.scenarioType = scenario.getSourceTagNames().iterator().next();
+        startRecording();
         BaseConfig.log.info("Application start [" + this.getClass().getName() + "]");
         OnStage.setTheStage(new OnlineCast());
     }
 
 
     @Given("the user enters a document {string} number on the public home page")
-    public void theUserEntersADocumentNumberOnThePublicHomePage(String data) {
+    public void theUserEntersADocumentNumberOnThePublicHomePage(String data) throws IOException {
         OnStage.theActorCalled(ACTOR).wasAbleTo(Open.url(URL_HOME_PUBLIC));
+        readExcelData("fineProjection", scenarioName);
 
-        FineProjectionData fineProjectionData = new FineProjectionData(data);
-        ///List<FineProjectionData> data2 = new ArrayList<FineProjectionData>();
-        ///data2.add(fineProjectionData);
+        for (int i = 0; i < ReadExcelFile.valuesExcel.size(); i += 1) {
+            FineProjectionData fineProjectionData = new FineProjectionData(ReadExcelFile.valuesExcel.get(i));
+            theActorInTheSpotlight().attemptsTo(
+                    HomePublicTask.homePublicTaskInstrumented(Collections.singletonList(fineProjectionData))
+            );
+            ///ReadExcelFile.valuesExcel.remove(0);
+            ReadExcelFile.valuesExcel.subList(0, 1).clear();
+        }
 
-        theActorInTheSpotlight().attemptsTo(
-                HomePublicTask.homePublicTaskInstrumented(Collections.singletonList(fineProjectionData))
-        );
     }
 
     @When("they view and close the fine projection")
@@ -68,13 +81,15 @@ public class FineProjectionSteps extends BaseConfig {
 
     @Then("the fine projection should hide {string}")
     public void theFineProjectionShouldHide(String texto) {
-        theActorInTheSpotlight().should(
-                seeThat(
-                        "Multas",
-                        FineProjectionQuestion.messageMultas(),
-                        equalTo(convertUtf8(texto))
-                )
+        theActorInTheSpotlight().attemptsTo(
+                NoFineProjectionTask.noFineProjectionTaskInstrumented(texto)
         );
+
+    }
+
+    @After
+    public void closeRecordingNameScenarioLogin() throws Exception {
+        closeRecording();
 
     }
 

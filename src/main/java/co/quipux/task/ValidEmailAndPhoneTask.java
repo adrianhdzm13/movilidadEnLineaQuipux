@@ -31,10 +31,11 @@ public class ValidEmailAndPhoneTask extends BaseConfig implements Task {
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
                 Click.on(BUTTON_CREAR_CUENTA),
-                Enter.theValue(data.get(0).getCelular()).into(INPUT_CELULAR),
+                PerformWait.wait(2),
                 Enter.theValue(data.get(0).getEmail()).into(INPUT_EMAIL),
+                Enter.theValue(data.get(0).getCelular()).into(INPUT_CELULAR),
                 Click.on(BUTTON_REGISTRARME),
-                PerformWait.wait(5)
+                PerformWait.wait(3)
         );
         BaseConfig.log.info("Execution of tasks and actions ["+this.getClass().getName()+"]");
     }

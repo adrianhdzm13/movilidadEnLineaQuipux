@@ -24,7 +24,6 @@ public class Write implements Interaction {
 
         char letter;
 
-
         for (int i = 0; i < text.length(); i++) {
 
             letter = text.charAt(i);

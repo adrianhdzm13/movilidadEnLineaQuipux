@@ -30,6 +30,7 @@ public class CreateAccountData extends BaseConfig {
         BaseConfig.log.info("User information setup ["+this.getClass().getName()+"]");
     }
 
+
     public String getTipo() {
         return tipo;
     }

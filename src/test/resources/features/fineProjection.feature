@@ -12,5 +12,5 @@ Feature: Fines validation
     Then the fine projection should hide "Multas"
     Examples:
       | identificacion |
-      | 111            |
-      | 1111           |
+      | excelData      |
+      | excelData      |

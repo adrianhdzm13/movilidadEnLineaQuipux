@@ -45,9 +45,11 @@ dependencies {
     implementation "org.apache.poi:poi-ooxml:$rootProject.ext.apacheOOXMLVersion"
     // https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.5.3'
-
     implementation "net.serenity-bdd:serenity-gradle-plugin:2.1.4"
     implementation "net.serenity-bdd:serenity-single-page-report:2.1.4"
+    // https://mvnrepository.com/artifact/com.github.stephenc.monte/monte-screen-recorder
+    implementation group: 'com.github.stephenc.monte', name: 'monte-screen-recorder', version: '0.7.7.0'
+
 
 }
 serenity {

@@ -3,8 +3,11 @@ import co.quipux.models.LoginData;
 import co.quipux.questions.LoginQuestion;
 import co.quipux.task.LoginTask;
 import co.quipux.utils.BaseConfig;
+import co.quipux.utils.ReadExcelFile;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,6 +15,8 @@ import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +41,10 @@ public class LoginSteps extends BaseConfig {
     }
 
     @Before
-    public void SetTheStage() {
+    public void SetTheStage(Scenario scenario) throws Exception {
+        this.scenarioName = scenario.getName();
+        this.scenarioType = scenario.getSourceTagNames().iterator().next();
+        startRecording();
         BaseConfig.log.info("Application start ["+this.getClass().getName()+"]");
         OnStage.setTheStage(new OnlineCast());
     }
@@ -46,11 +54,19 @@ public class LoginSteps extends BaseConfig {
         OnStage.theActorCalled(ACTOR).wasAbleTo(Open.url(URL));
     }
 
+
     @When("the user enters a username and password")
-    public void theUserEntersAUsernameAndPassword(List<LoginData> data) {
-        theActorInTheSpotlight().attemptsTo(
-                LoginTask.loginTaskInstrumented(data)
-        );
+    public void theUserEntersAUsernameAndPassword() throws IOException {
+        readExcelData("login", scenarioName);
+        for (int i = 0; i < ReadExcelFile.valuesExcel.size(); i += 2) {
+            LoginData loginData = new LoginData( ReadExcelFile.valuesExcel.get(i),  ReadExcelFile.valuesExcel.get(i + 1));
+            theActorInTheSpotlight().attemptsTo(
+                    LoginTask.loginTaskInstrumented(Collections.singletonList(loginData))
+            );
+            ///ReadExcelFile.valuesExcel.remove(0);
+            ReadExcelFile.valuesExcel.subList(0, 2).clear();
+        }
+
     }
 
     @Then("the user should be redirected to the main dashboard {string}")
@@ -62,5 +78,11 @@ public class LoginSteps extends BaseConfig {
                         equalTo(convertUtf8(text))
                 )
         );
+    }
+
+    @After
+    public void closeRecordingNameScenarioLogin() throws Exception {
+        closeRecording();
+
     }
 }
